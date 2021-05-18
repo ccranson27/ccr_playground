@@ -32,14 +32,29 @@ def getFrames(video_capture, frame_num, frame_start=0):
    
    # Frames to be returned
    return image_arr 
+
+# Method: getEdges
+# Purpose: gets the edges in an image via converting to gray scale than bluring the image
+# Parameters: frame_list: list of frames
+#             line_size: how large the lines should be on edges
+#             blur_value: how blurred the image should be    
+def getEdges(frame_list, line_size, blur_value):
+  frame_edges = []
+  for i in frame_list:
+     gray_image = cv2.cvtColor(i, cv2.COLOR_BGR2GRAY)
+     gray_blurred_image = cv2.medianBlur(gray_image, blur_value)
+     frame_edges.append(cv2.adaptiveThreshold(gray_blurred_image, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, line_size, blur_value))
+     
+  return frame_edges
     
 # Capture Video input from an mp4 file
 cap = cv2.VideoCapture('Videos/zoom_0.mp4')
 
 # Get frames from first video file 
 frames = getFrames(cap, 3, 3)
-for i in range(len(frames)):
-   cv2.imshow('Frame: ' + str(i), frames[i])
+edges = getEdges(frames, 9, 5)
+for i in range(len(edges)):
+   cv2.imshow('Frame: ' + str(i), edges[i])
    cv2.waitKey(0)
 
 # Release all windows upon completion
