@@ -63,11 +63,18 @@ frames = getFrames(cap, number_of_frames, start_frame)
 if output_info == 2 or output_info == 3:
    edges = getEdges(frames, 9, 5)
 
+figure_count = 1
 for i in range(len(frames)):
-   cv2.imshow('Frame: ' + str(i+1), frames[i])
+   plt.figure(figure_count)
+   plt.title('Frame '+ str(i+1))
+   plt.imshow(frames[i])
+   plt.show()
    if output_info == 2 or output_info == 3:
-      cv2.imshow('Edge: ' + str(i+1), edges[i])
-   cv2.waitKey(0)
+      figure_count += 1
+      plt.figure(figure_count)
+      plt.title('Edge '+ str(i+1))
+      plt.imshow(edges[i])
+   figure_count += 1
 
 # Release all windows upon completion
 cap.release()
