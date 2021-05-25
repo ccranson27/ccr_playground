@@ -48,13 +48,25 @@ def getEdges(frame_list, line_size, blur_value):
   return frame_edges
     
 # Capture Video input from an mp4 file
-cap = cv2.VideoCapture('Videos/zoom_0.mp4')
+try:
+   video = input("Please enter the name of the video:\n") # All videos must be in 'Videos' directory
+   cap = cv2.VideoCapture('Videos/' + video)
+except:
+   print('Invalid video input')
+   sys.exit(1)
 
 # Get frames from first video file 
-frames = getFrames(cap, 3, 3)
-edges = getEdges(frames, 9, 5)
-for i in range(len(edges)):
-   cv2.imshow('Frame: ' + str(i), edges[i])
+number_of_frames = int(input("Please enter the number of frames to obtain:\n"))
+start_frame = int(input("Please enter the first frame to be collected and processed:\n"))
+output_info = int(input("Please enter 1 for frames only, 2 for edges only, or 3 for both:\n"))
+frames = getFrames(cap, number_of_frames, start_frame)
+if output_info == 2 or output_info == 3:
+   edges = getEdges(frames, 9, 5)
+
+for i in range(len(frames)):
+   cv2.imshow('Frame: ' + str(i+1), frames[i])
+   if output_info == 2 or output_info == 3:
+      cv2.imshow('Edge: ' + str(i+1), edges[i])
    cv2.waitKey(0)
 
 # Release all windows upon completion
