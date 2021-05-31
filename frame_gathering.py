@@ -21,7 +21,7 @@ def get_frames(video_capture, frame_num, frame_start=0):
 
         # Use opencv to write the frame that was extracted from the video
         if counter >= frame_start:
-            image_arr.append(image)
+            image_arr.append(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
 
         # Increment the counter as more frames are extracted
         counter += 1
